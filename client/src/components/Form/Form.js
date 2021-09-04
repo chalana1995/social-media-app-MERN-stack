@@ -11,7 +11,7 @@ function Form() {
     title: "",
     message: "",
     tags: "",
-    selectedFiles: "",
+    selectedFile: "",
   });
 
   const classes = useStyles();
@@ -79,7 +79,7 @@ function Form() {
             type="file"
             multiple={false}
             onDone={({ base64 }) =>
-              setPostData({ ...postData, selectedFiles: base64 })
+              setPostData({ ...postData, selectedFile: base64 })
             }
           />
         </div>
