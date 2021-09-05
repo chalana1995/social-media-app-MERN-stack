@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
-import { useDispatch } from "react-redux";
-import { createPost } from "../../actions/posts";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost, updatePost } from "../../actions/posts";
 
-function Form() {
+function Form({ currentId, setCurrentId }) {
   const [postData, setPostData] = useState({
-    creater: "",
+    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -16,11 +16,24 @@ function Form() {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const post = useSelector((state) =>
+    currentId ? state.posts.find((p) => p._id === currentId) : null
+  );
+
+  useEffect(() => {
+    if (post) {
+      setPostData(post);
+    }
+  }, [post]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(createPost(postData));
+    if (currentId) {
+      dispatch(updatePost(currentId, postData));
+    } else {
+      dispatch(createPost(postData));
+    }
   };
 
   const clear = (e) => {
@@ -39,13 +52,13 @@ function Form() {
       >
         <Typography variant="h6">Creating a memory</Typography>
         <TextField
-          name="creater"
+          name="creator"
           variant="outlined"
-          label="Creater"
+          label="Creator"
           fullWidth
-          value={postData.creater}
+          value={postData.creator}
           onChange={(e) =>
-            setPostData({ ...postData, creater: e.target.value })
+            setPostData({ ...postData, creator: e.target.value })
           }
         />
         <TextField
