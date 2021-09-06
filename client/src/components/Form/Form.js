@@ -37,9 +37,15 @@ function Form({ currentId, setCurrentId }) {
   };
 
   const clear = (e) => {
-    e.preventDefault();
-
-    setPostData("");
+    // e.preventDefault();
+    setCurrentId(null);
+    setPostData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
   };
 
   return (
@@ -50,7 +56,9 @@ function Form({ currentId, setCurrentId }) {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant="h6">Creating a memory</Typography>
+        <Typography variant="h6">
+          {currentId ? "Updating" : "Creating"} a memory
+        </Typography>
         <TextField
           name="creator"
           variant="outlined"
